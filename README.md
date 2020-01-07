@@ -1,4 +1,4 @@
-# PageSpeed-CLI
+# PageSpeed-CLI [![codecov](https://codecov.io/gh/awcodify/pagespeed-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/awcodify/pagespeed-cli)
 
 CLI for testing a web performance using Google PageSpeed
 
