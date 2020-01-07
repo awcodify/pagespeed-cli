@@ -16,4 +16,11 @@ func TestDesktop(t *testing.T) {
 	if m.ID != "https://www.google.com/" {
 		t.Errorf("We are testing %s, but %s returned", "https://www.google.com/", m.ID)
 	}
+
+	r.WebToBeTested = "http://a"
+	m = r.Desktop()
+
+	if m.ID != "" {
+		t.Errorf("It should be error but found %s", m.ID)
+	}
 }
