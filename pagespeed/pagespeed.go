@@ -15,7 +15,8 @@ type PageSpeed interface {
 
 // Metric is metric for page speed
 type Metric struct {
-	ID               string           `json:"id"`
+	ID               string `json:"id"`
+	Strategy         string
 	LighthouseResult LighthouseResult `json:"LighthouseResult"`
 }
 
@@ -45,13 +46,15 @@ type Score struct {
 type RequestAttrs struct {
 	URL           string
 	WebToBeTested string
-	Category      string
+	Strategy      string
 }
 
 // Desktop is for calculating page speed
 func (r RequestAttrs) Desktop() Metric {
-	m := Metric{}
-	url := fmt.Sprintf("%s?url=%s&category=%s", r.URL, r.WebToBeTested, r.Category)
+	m := Metric{
+		Strategy: r.Strategy,
+	}
+	url := fmt.Sprintf("%s?url=%s&strategy=%s", r.URL, r.WebToBeTested, r.Strategy)
 
 	getJSON(url, &m)
 
