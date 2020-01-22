@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -54,7 +55,13 @@ func (r RequestAttrs) Desktop() Metric {
 	m := Metric{
 		Strategy: r.Strategy,
 	}
-	url := fmt.Sprintf("%s?url=%s&strategy=%s", r.URL, r.WebToBeTested, r.Strategy)
+
+	u, err := url.ParseRequestURI(r.WebToBeTested)
+	if err != nil {
+		return Metric{}
+	}
+
+	url := fmt.Sprintf("%s?url=%s&strategy=%s", r.URL, u, r.Strategy)
 
 	getJSON(url, &m)
 
