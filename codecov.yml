@@ -1,9 +1,0 @@
-coverage:
-  status:
-    project:
-      default:
-        target: 100%
-      pagespeed:
-        target: 85%
-        paths:
-          - pagespeed

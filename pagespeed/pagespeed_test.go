@@ -25,16 +25,32 @@ func TestDesktop(t *testing.T) {
 		Strategy:      "mobile",
 	}
 
-	m := r.Desktop()
+	m, err := r.Desktop()
 
 	if m.ID != "https://www.google.com/" {
 		t.Errorf("We are testing %s, but %s returned", "https://www.google.com/", m.ID)
 	}
 
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+
 	r.WebToBeTested = "asdf"
-	m = r.Desktop()
+	m, err = r.Desktop()
 
 	if m.ID != "" {
-		t.Errorf("It should be error but found %s", m.ID)
+		t.Errorf("It should be nil but found %s", m.ID)
+	}
+
+	if err == nil {
+		t.Errorf("%s", err)
+	}
+
+	r.URL = "asdf"
+	r.WebToBeTested = "https://google.com"
+	m, err = r.Desktop()
+
+	if err == nil {
+		t.Errorf("It should be invalid URI for request")
 	}
 }

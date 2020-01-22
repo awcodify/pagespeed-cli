@@ -63,7 +63,10 @@ func main() {
 			Strategy:      strategy,
 		}
 
-		m := r.Desktop()
+		m, err := r.Desktop()
+		if err != nil {
+			return err
+		}
 
 		s, _ := prettyjson.Marshal(m)
 		fmt.Println(string(s))

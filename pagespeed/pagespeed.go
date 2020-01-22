@@ -51,22 +51,23 @@ type RequestAttrs struct {
 }
 
 // Desktop is for calculating page speed
-func (r RequestAttrs) Desktop() Metric {
+func (r RequestAttrs) Desktop() (Metric, error) {
 	m := Metric{
 		Strategy: r.Strategy,
 	}
 
 	u, err := url.ParseRequestURI(r.WebToBeTested)
 	if err != nil {
-		return Metric{}
+		return Metric{}, err
 	}
 
 	url := fmt.Sprintf("%s?url=%s&strategy=%s", r.URL, u, r.Strategy)
 
-	getJSON(url, &m)
+	if errHTTP := getJSON(url, &m); errHTTP != nil {
+		return Metric{}, errHTTP
+	}
 
-	return m
-
+	return m, nil
 }
 
 var myClient = &http.Client{Timeout: 10 * time.Second}
