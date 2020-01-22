@@ -3,6 +3,10 @@ language: go
 go:
   - 1.13.4
 
+cache:
+  directories:
+    - $GOPATH/pkg/mod
+
 before_install:
   - go get -t -v ./...
 
