@@ -11,50 +11,64 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var (
-	threshold = flag.Int("threshold", 80, "")
-	key       = flag.String("key", "", "")
-)
-
 func main() {
-	var WebToBeTested, strategy, format, key string
+	var webToBeTested, strategy, format, key string
 	var threshold int
 
-	app := &cli.App{
-		Action: func(c *cli.Context) error {
-			WebToBeTested = c.Args().Get(0)
-			return nil
-		},
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:        "strategy",
-				Value:       "desktop",
-				Usage:       "Strategy to use when analyzing the page: mobile|desktop",
-				Destination: &strategy,
-			},
-			&cli.StringFlag{
-				Name:        "format",
-				Value:       "json",
-				Usage:       "Output format: cli|json",
-				Destination: &format,
-			},
-			&cli.StringFlag{
-				Name:        "key",
-				Usage:       "Google API Key. By default the free tier is used",
-				Destination: &key,
-			},
+	app := cli.NewApp()
 
-			&cli.IntFlag{
-				Name:        "threshold",
-				Value:       80,
-				Usage:       "Threshold score to pass the PageSpeed test",
-				Destination: &threshold,
-			},
+	app.Flags = []cli.Flag{
+		&cli.StringFlag{
+			Name:        "strategy",
+			Value:       "desktop",
+			Usage:       "Strategy to use when analyzing the page: mobile|desktop",
+			Destination: &strategy,
+		},
+		&cli.StringFlag{
+			Name:        "format",
+			Value:       "json",
+			Usage:       "Output format: cli|json",
+			Destination: &format,
+		},
+		&cli.StringFlag{
+			Name:        "key",
+			Usage:       "Google API Key. By default the free tier is used",
+			Destination: &key,
+		},
+
+		&cli.IntFlag{
+			Name:        "threshold",
+			Value:       80,
+			Usage:       "Threshold score to pass the PageSpeed test",
+			Destination: &threshold,
 		},
 	}
 
-	if format != "json" || threshold != 80 || key != "" {
-		log.Fatal("This feature is under development")
+	app.Action = func(c *cli.Context) error {
+		if c.NArg() > 0 {
+			webToBeTested = c.Args().Get(0)
+		} else {
+			fmt.Println("Please provide the URL to be tested!")
+			cli.ShowAppHelp(c)
+			return nil
+		}
+
+		if format != "json" || threshold != 80 || key != "" {
+			log.Fatal("This feature is under development")
+		}
+
+		r := pagespeed.RequestAttrs{
+			URL:           "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+			WebToBeTested: webToBeTested,
+			Strategy:      strategy,
+		}
+
+		m := r.Desktop()
+
+		s, _ := prettyjson.Marshal(m)
+		fmt.Println(string(s))
+
+		return nil
 	}
 
 	err := app.Run(os.Args)
@@ -62,16 +76,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := pagespeed.RequestAttrs{
-		URL:           "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
-		WebToBeTested: WebToBeTested,
-		Strategy:      strategy,
-	}
-
-	m := r.Desktop()
-
-	s, _ := prettyjson.Marshal(m)
-	fmt.Println(string(s))
 }
 
 func printUsage() {
