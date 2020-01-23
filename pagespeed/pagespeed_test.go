@@ -1,6 +1,7 @@
 package pagespeed
 
 import (
+	"errors"
 	"net/http"
 	"testing"
 
@@ -20,7 +21,6 @@ func TestRun(t *testing.T) {
 	)
 
 	r := RequestAttrs{
-		URL:           "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
 		WebToBeTested: "https://www.google.com/",
 		Strategy:      "mobile",
 	}
@@ -46,7 +46,12 @@ func TestRun(t *testing.T) {
 		t.Errorf("%s", err)
 	}
 
-	r.URL = "asdf"
+	httpmock.RegisterResponder("GET", "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+		func(req *http.Request) (*http.Response, error) {
+			return nil, errors.New("Hello")
+		},
+	)
+
 	r.WebToBeTested = "https://google.com"
 	m, err = r.Run()
 
