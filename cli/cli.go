@@ -58,7 +58,6 @@ func NewApp() *cli.App {
 		}
 
 		r := pagespeed.RequestAttrs{
-			URL:           "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
 			WebToBeTested: webToBeTested,
 			Strategy:      strategy,
 		}

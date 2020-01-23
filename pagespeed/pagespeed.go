@@ -51,6 +51,8 @@ type RequestAttrs struct {
 	Strategy      string
 }
 
+const baseURL = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
+
 // Run is for calculating page speed
 func (r RequestAttrs) Run() (Metric, error) {
 	m := Metric{
@@ -62,7 +64,7 @@ func (r RequestAttrs) Run() (Metric, error) {
 		return Metric{}, err
 	}
 
-	url := fmt.Sprintf("%s?url=%s&strategy=%s", r.URL, u, r.Strategy)
+	url := fmt.Sprintf("%s?url=%s&strategy=%s", baseURL, u, r.Strategy)
 
 	if errHTTP := getJSON(url, &m); errHTTP != nil {
 		return Metric{}, errHTTP
