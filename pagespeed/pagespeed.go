@@ -76,7 +76,7 @@ func (m Metric) ScorePercentum() float32 {
 	return m.LighthouseResult.Categories.Performance.Score * 100
 }
 
-var myClient = &http.Client{Timeout: 10 * time.Second}
+var myClient = &http.Client{Timeout: 30 * time.Second}
 
 func getJSON(url string, target interface{}) error {
 	r, err := myClient.Get(url)
