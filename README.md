@@ -17,8 +17,6 @@ cd cmd && go build pagespeed.go
 ## Current Idea
 * Fix the code documentations
 * Create prometheus exporter
-* Add mobile version test
-* Add another categories
 * Better result
 
 ## Contributing

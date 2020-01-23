@@ -63,7 +63,7 @@ func main() {
 			Strategy:      strategy,
 		}
 
-		m, err := r.Desktop()
+		m, err := r.Run()
 		if err != nil {
 			return err
 		}

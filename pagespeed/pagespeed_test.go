@@ -7,7 +7,7 @@ import (
 	"github.com/jarcoal/httpmock"
 )
 
-func TestDesktop(t *testing.T) {
+func TestRun(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
@@ -25,7 +25,7 @@ func TestDesktop(t *testing.T) {
 		Strategy:      "mobile",
 	}
 
-	m, err := r.Desktop()
+	m, err := r.Run()
 
 	if m.ID != "https://www.google.com/" {
 		t.Errorf("We are testing %s, but %s returned", "https://www.google.com/", m.ID)
@@ -36,7 +36,7 @@ func TestDesktop(t *testing.T) {
 	}
 
 	r.WebToBeTested = "asdf"
-	m, err = r.Desktop()
+	m, err = r.Run()
 
 	if m.ID != "" {
 		t.Errorf("It should be nil but found %s", m.ID)
@@ -48,7 +48,7 @@ func TestDesktop(t *testing.T) {
 
 	r.URL = "asdf"
 	r.WebToBeTested = "https://google.com"
-	m, err = r.Desktop()
+	m, err = r.Run()
 
 	if err == nil {
 		t.Errorf("It should be invalid URI for request")

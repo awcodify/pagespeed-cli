@@ -8,12 +8,6 @@ import (
 	"time"
 )
 
-// PageSpeed is a google API
-type PageSpeed interface {
-	Desktop() Metric
-	Mobile() Metric
-}
-
 // Metric is metric for page speed
 type Metric struct {
 	ID               string `json:"id"`
@@ -50,8 +44,8 @@ type RequestAttrs struct {
 	Strategy      string
 }
 
-// Desktop is for calculating page speed
-func (r RequestAttrs) Desktop() (Metric, error) {
+// Run is for calculating page speed
+func (r RequestAttrs) Run() (Metric, error) {
 	m := Metric{
 		Strategy: r.Strategy,
 	}
