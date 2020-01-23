@@ -1,12 +1,12 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/awcodify/pagespeed-cli/pagespeed"
+	"github.com/fatih/color"
 	"github.com/hokaccha/go-prettyjson"
 	"github.com/urfave/cli/v2"
 )
@@ -53,7 +53,7 @@ func main() {
 			return nil
 		}
 
-		if format != "json" || threshold != 80 || key != "" {
+		if format != "json" || key != "" {
 			log.Fatal("This feature is under development")
 		}
 
@@ -68,6 +68,23 @@ func main() {
 			return err
 		}
 
+		score := m.ScorePercentum()
+		thr := float32(threshold)
+		edge := ((100 - thr) / 4) + thr
+		var msg string
+
+		fmt.Println(thr)
+		if score < thr {
+			msg = fmt.Sprintf("FAILED: Your score is %.2f, threshold %.2f!", score, thr)
+			color.Red(msg)
+		} else if score < edge {
+			msg = fmt.Sprintf("PASSED: Your score is %.2f, threshold %.2f!", score, thr)
+			color.Yellow(msg)
+		} else {
+			msg = fmt.Sprintf("PASSED: Your score is %.2f, threshold %.2f!", score, thr)
+			color.Green(msg)
+		}
+
 		s, _ := prettyjson.Marshal(m)
 		fmt.Println(string(s))
 
@@ -78,18 +95,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func printUsage() {
-	fmt.Println()
-	fmt.Println("Usage:")
-	fmt.Println(" ", "$", os.Args[0], "URL", "OPTIONS")
-	fmt.Println()
-
-	fmt.Println("Options:")
-	flag.PrintDefaults()
-
-	fmt.Println("Example")
-	fmt.Println(" ", "$", os.Args[0], "--strategy=mobile")
-	os.Exit(1)
 }

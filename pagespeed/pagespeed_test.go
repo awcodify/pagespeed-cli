@@ -54,3 +54,21 @@ func TestRun(t *testing.T) {
 		t.Errorf("It should be invalid URI for request")
 	}
 }
+
+func TestScorePercentum(t *testing.T) {
+	m := Metric{
+		LighthouseResult: lighthouseResult{
+			Categories: categories{
+				Performance: performance{
+					Score: 0.9,
+				},
+			},
+		},
+	}
+
+	s := m.ScorePercentum()
+
+	if s != float32(90.00) {
+		t.Errorf("It should 90.0, but get %f", s)
+	}
+}

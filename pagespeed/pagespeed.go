@@ -12,23 +12,30 @@ import (
 type Metric struct {
 	ID               string `json:"id"`
 	Strategy         string
-	LighthouseResult LighthouseResult `json:"LighthouseResult"`
+	LighthouseResult lighthouseResult `json:"LighthouseResult"`
 }
 
-// LighthouseResult is
-type LighthouseResult struct {
-	Audits Audits `json:"audits"`
+type lighthouseResult struct {
+	Audits     audits     `json:"audits"`
+	Categories categories `json:"categories"`
 }
 
-// Audits is
-type Audits struct {
-	FirstContentfulPaint Score `json:"first-contentful-paint"`
-	SpeedIndex           Score `json:"speed-index"`
-	TimeToInteractive    Score `json:"interactive"`
+type audits struct {
+	FirstContentfulPaint score `json:"first-contentful-paint"`
+	SpeedIndex           score `json:"speed-index"`
+	TimeToInteractive    score `json:"interactive"`
+}
+
+type categories struct {
+	Performance performance `json:"performance"`
+}
+
+type performance struct {
+	Score float32 `json:"score"`
 }
 
 // Score is
-type Score struct {
+type score struct {
 	Title            string
 	Description      string
 	ScoreDisplayMode string
@@ -62,6 +69,11 @@ func (r RequestAttrs) Run() (Metric, error) {
 	}
 
 	return m, nil
+}
+
+// ScorePercentum will convert score to percentum
+func (m Metric) ScorePercentum() float32 {
+	return m.LighthouseResult.Categories.Performance.Score * 100
 }
 
 var myClient = &http.Client{Timeout: 10 * time.Second}
