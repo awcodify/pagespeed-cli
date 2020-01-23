@@ -1,9 +1,8 @@
-package main
+package cli
 
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/awcodify/pagespeed-cli/pagespeed"
 	"github.com/fatih/color"
@@ -11,7 +10,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func main() {
+// NewApp is TODO
+func NewApp() *cli.App {
 	var webToBeTested, strategy, format, key string
 	var threshold int
 
@@ -91,8 +91,5 @@ func main() {
 		return nil
 	}
 
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return app
 }

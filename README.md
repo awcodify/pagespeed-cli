@@ -5,13 +5,13 @@ CLI for testing a web performance using Google PageSpeed
 ## Installation
 
 ```bash
-cd cmd && go build pagespeed.go
+go build 
 ```
 
 ## Usage
 
 ```bash
-./pagespeed --help
+./pagespeed-cli --help
 ```
 
 ## Current Idea
