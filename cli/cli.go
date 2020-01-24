@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// NewApp is TODO
+// NewApp will initialize the cli
 func NewApp() *cli.App {
 	var webToBeTested, strategy, format, key string
 	var threshold int

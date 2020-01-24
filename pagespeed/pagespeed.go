@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Metric is metric for page speed
+// Metric will collect the result of test from Google API
 type Metric struct {
 	ID               string `json:"id"`
 	Strategy         string
@@ -34,7 +34,7 @@ type performance struct {
 	Score float32 `json:"score"`
 }
 
-// Score is
+// Score is for showing the result in number
 type score struct {
 	Title            string
 	Description      string
