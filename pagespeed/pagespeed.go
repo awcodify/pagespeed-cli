@@ -10,14 +10,30 @@ import (
 
 // Metric will collect the result of test from Google API
 type Metric struct {
-	ID               string `json:"id"`
-	Strategy         string
-	LighthouseResult lighthouseResult `json:"LighthouseResult"`
+	ID                string `json:"id"`
+	Strategy          string
+	LoadingExperience loadingExperience `json:"loadingExperience"`
+	LighthouseResult  lighthouseResult  `json:"lighthouseResult"`
 }
 
 type lighthouseResult struct {
 	Audits     audits     `json:"audits"`
 	Categories categories `json:"categories"`
+}
+
+type loadingExperience struct {
+	Metrics          loadingMetrics `json:"metrics"`
+	OvertallCategory string         `json:"overall_category"`
+}
+
+type loadingMetrics struct {
+	FirstContentfulPaint loadingScore `json:"FIRST_CONTENTFUL_PAINT_MS"`
+	FirstInputDelay      loadingScore `json:"FIRST_INPUT_DELAY_MS"`
+}
+
+type loadingScore struct {
+	Percentile float32
+	Category   string
 }
 
 type audits struct {
